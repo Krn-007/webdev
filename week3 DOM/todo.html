@@ -1,0 +1,43 @@
+<!-- // creating a todo list using state and components -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo</title>
+</head>
+<body>
+    
+        <input id="inp" type="text"></input>
+        <button onclick="addTodo()">Add Todo</button>
+        <div id="todos"></div>
+    
+</body>
+<script>
+    let todos = []
+    function addTodo(){
+        todos.push({
+            title: document.querySelector("input").value
+        })
+        render()
+    }
+    function deleteTodo(){
+        todos["2"]
+    }
+    function render(){
+        document.querySelector("#todos").innerHTML = "";
+        for (let i = 0; i < todos.length; i++) {
+            const todo = todos[i]
+            const div = document.createElement("div")
+            const heading = document.createElement("h4")
+            const button = document.createElement("button")
+            button.innerHTML = "Delete"
+            heading.innerHTML = todo.title
+            div.appendChild(heading)
+            div.appendChild(button)
+            document.querySelector("#todos").appendChild(div)
+        }
+    }
+</script>
+</html>
+

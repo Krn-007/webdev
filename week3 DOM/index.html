@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo List</title>
+</head>
+<body>
+    <h1>Todo List</h1>
+    <div id="todos">
+        <div id="todo-1", style="display: flex;">
+            <h4>1. Take Class</h4>
+            <button onclick="deleteTodo(1)">delete</button>
+        </div>
+        <div id="todo-2", style="display: flex;">
+            <h4>2. Go to Gym</h4>
+            <button onclick="deleteTodo(2)">delete</button>
+        </div>
+    </div>
+    <div>
+        <input id="inp" type="text"></input>
+        <button onclick="addTodo()">Add Todo</button>
+    </div>
+</body>
+<script>
+    let currentIndex = 3;
+    function addTodo(){
+        const inputEl = document.getElementById("inp")
+        const todotext = inputEl.value.trim();
+
+        if(todotext === ''){
+            alert("please enter a todo")
+            return
+        }
+
+        const parentEl = document.getElementById("todos");
+
+        //create a new div
+        const newTodo = document.createElement("div")
+        newTodo.setAttribute("id","todo-" + currentIndex)
+
+        //create a new heading
+        const heading = document.createElement("h4")
+        heading.textContent = currentIndex + '. '+ todotext
+
+        //create a button
+        const newButton = document.createElement("button")
+        newButton.textContent = 'Delete'
+        newButton.setAttribute("onclick", "deleteTodo(" + currentIndex + ")")
+
+        newTodo.appendChild(heading)
+        newTodo.appendChild(newButton)
+
+        parentEl.appendChild(newTodo)
+
+        currentIndex++
+
+        inputEl.value = ''
+    }
+
+    function deleteTodo(index){
+        const element = document.getElementById("todo-"+ index)
+        if(element){
+            element.parentNode.removeChild(element)
+        }
+    }
+    
+</script>
+</html>
