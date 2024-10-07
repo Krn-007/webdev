@@ -1,0 +1,12 @@
+JWTS or JSON Web Tokens are A compact and self-contained way to represent information information between two parties. They are commonly used for authentication and information exchange in web application.
+
+JWT Are stateless: JWTs contain all the information needed to authenticate a request, so the server doesn't need to store session data. All data is stored in the token itself
+
+Token versus JWT
+There is a problem with using stateful tokens
+
+By State full year, we mean that we need to store these tokens in a variable right now and eventually in a database
+
+The problem is that we need to send a request to the database. Every time the user wants to hit and authenticated end point.
+
+For the verification of the token, we have to access the database every time which is a problem in token, but in JWT, for example, username can be encrypted as tokens and when the user want to access its data, They will signed in and the system will decrypted the token and access it access the username out of it and shows the data related to the user due to which we Will not access the database when it's not needed
