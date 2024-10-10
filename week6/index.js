@@ -97,38 +97,138 @@
 
 // app.listen(3000)
 
+// const express = require("express");
+// const app = express();
+// const jwt = require("jsonwebtoken");
+// const JWT_SECRET = "randomKaran";
+
+// app.use(express.json());
+
+// let users = []
+
+// app.get("/", (req, res)=>{
+//     res.sendFile(__dirname + "/public/index.html")
+// })
+
+// app.post("/signup", (req,res)=>{
+//     const username = req.body.username;
+//     const password = req.body.password;
+
+//     users.push({
+//         username: username,
+//         password: password
+//     })
+
+//     res.json({
+//         msg:"you successfully signedup"
+//     })
+
+//     console.log(users);
+// })
+// app.post("/signin", (req,res)=>{
+//     const username = req.body.username;
+//     const password = req.body.password;
+
+//     const foundUser = users.find(function(u){
+//         if(u.username == username && u.password == password){
+//             return true;
+//         } else{
+//             return false;
+//         }
+//     })
+//     if(foundUser){
+//         const token = jwt.sign({
+//             username: foundUser.username
+//         }, JWT_SECRET);
+
+//         res.header("jwt", token);
+
+//         res.header("random", "harkirat");
+
+//         res.json({
+//             token: token
+//         })
+//     } else{
+//         res.status(403).send({
+//             message: "invalid username or password"
+//         })
+//     }    
+// })
+
+// function auth(req, res, next) {
+//     const token = req.headers.token;
+//     const decodedData = jwt.verify(token, JWT_SECRET);
+
+//     if (decodedData.username) {
+//         // req = {status, headers...., username, password, userFirstName, random; ":123123"}
+//         req.username = decodedData.username
+//         next()
+//     } else {
+//         res.json({
+//             message: "You are not logged in"
+//         })
+//     }
+// }
+// app.get("/me", auth,(req,res)=>{
+    
+//     let foundUser = users.find(function(u){
+//         if(u.username == req.username){
+//             return true;
+//         } else{
+//             return false;
+//         }
+//     })
+
+//     if(foundUser){
+//         res.send({
+//             username: foundUser.username,
+//             password: foundUser.password
+//         })
+//     } else{
+//         res.json({
+//             msg: "invalid token"
+//         })
+//     }
+// })
+
+
+// app.listen(3000)
+
+
 const express = require("express");
-const app = express();
+const app = express()
 const jwt = require("jsonwebtoken");
 const JWT_SECRET = "randomKaran";
+app.use(express.json())
 
-app.use(express.json());
 
-let users = []
+let users = [];
 
 app.get("/", (req, res)=>{
     res.sendFile(__dirname + "/public/index.html")
 })
 
 app.post("/signup", (req,res)=>{
+
     const username = req.body.username;
     const password = req.body.password;
 
     users.push({
-        username: username,
-        password: password
+        username,
+        password
     })
+    console.log(users);
 
     res.json({
-        msg:"you successfully signedup"
+        msg: "You successfully signedup"
     })
-
-    console.log(users);
 })
+
 app.post("/signin", (req,res)=>{
+
     const username = req.body.username;
     const password = req.body.password;
-
+    
     const foundUser = users.find(function(u){
         if(u.username == username && u.password == password){
             return true;
@@ -139,37 +239,35 @@ app.post("/signin", (req,res)=>{
     if(foundUser){
         const token = jwt.sign({
             username: foundUser.username
-        }, JWT_SECRET);
-
-        res.header("jwt", token);
-
-        res.header("random", "harkirat");
+        }, JWT_SECRET)
 
         res.json({
             token: token
         })
+
     } else{
         res.status(403).send({
-            message: "invalid username or password"
+            msg: "invalid username"
         })
-    }    
+    }
 })
 
-function auth(req, res, next) {
+function auth(req, res, next){
     const token = req.headers.token;
     const decodedData = jwt.verify(token, JWT_SECRET);
+    const username = decodedData.username
 
-    if (decodedData.username) {
-        // req = {status, headers...., username, password, userFirstName, random; ":123123"}
-        req.username = decodedData.username
-        next()
-    } else {
-        res.json({
-            message: "You are not logged in"
+    if(username){
+        req.username = username;
+        next();
+    } else{
+        res.status(403).send({
+            msg: "invalid token"
         })
     }
 }
-app.get("/me", auth,(req,res)=>{
+
+app.get("/me",auth, (req,res)=>{
     
     let foundUser = users.find(function(u){
         if(u.username == req.username){
@@ -178,18 +276,15 @@ app.get("/me", auth,(req,res)=>{
             return false;
         }
     })
-
     if(foundUser){
-        res.send({
+        res.json({
             username: foundUser.username,
             password: foundUser.password
         })
     } else{
-        res.json({
-            msg: "invalid token"
+        res.status(403).send({
+            msg: "User not found"
         })
     }
 })
-
-
 app.listen(3000)
